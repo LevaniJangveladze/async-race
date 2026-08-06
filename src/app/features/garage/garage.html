@@ -1,0 +1,22 @@
+<h2>Garage ({{ state.totalCount() }})</h2>
+<p>Page {{ state.page() }} of {{ state.totalPages() }}</p>
+
+@if (state.cars().length === 0) {
+  <p class="garage__empty">No cars in the garage</p>
+} @else {
+  <ul class="garage__list">
+    @for (car of state.cars(); track car.id) {
+      <li class="garage__item">
+        <span class="garage__swatch" [style.background]="car.color"></span>
+        <span class="garage__name">{{ car.name }}</span>
+      </li>
+    }
+  </ul>
+}
+
+<div class="garage__pagination">
+  <button type="button" (click)="previousPage()" [disabled]="state.page() === 1">Prev</button>
+  <button type="button" (click)="nextPage()" [disabled]="state.page() === state.totalPages()">
+    Next
+  </button>
+</div>
