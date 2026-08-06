@@ -22,3 +22,35 @@ export const HTTP_METHOD = {
   patch: 'PATCH',
   delete: 'DELETE',
 } as const;
+
+export const CAR_BRANDS = [
+  'Tesla',
+  'Ford',
+  'BMW',
+  'Audi',
+  'Toyota',
+  'Mazda',
+  'Volvo',
+  'Honda',
+  'Nissan',
+  'Porsche',
+];
+
+export const CAR_MODELS = [
+  'Model S',
+  'Mustang',
+  'X5',
+  'A4',
+  'Corolla',
+  'RX-7',
+  'XC90',
+  'Civic',
+  'GT-R',
+  '911',
+];
+
+export const HEX_COLOR_MAX = 0xffffff;
+export const HEX_RADIX = 16;
+export const HEX_LENGTH = 6;
+export const MAX_CAR_NAME_LENGTH = 30;
+export const DEFAULT_CAR_COLOR = '#0088ff';

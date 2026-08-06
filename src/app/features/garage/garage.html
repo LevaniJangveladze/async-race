@@ -1,14 +1,79 @@
-<h2>Garage ({{ state.totalCount() }})</h2>
-<p>Page {{ state.page() }} of {{ state.totalPages() }}</p>
+<h2 class="garage__title">Garage ({{ state.totalCount() }})</h2>
+
+<section class="panel">
+  <div class="panel__row">
+    <input
+      class="panel__input"
+      type="text"
+      placeholder="Car name"
+      [value]="createName()"
+      [attr.maxlength]="maxNameLength"
+      (input)="onCreateName($event)"
+    />
+    <input
+      class="panel__color"
+      type="color"
+      [value]="createColor()"
+      (input)="onCreateColor($event)"
+    />
+    <button type="button" [disabled]="!canCreate()" (click)="submitCreate()">Create</button>
+  </div>
+
+  <div class="panel__row">
+    <input
+      class="panel__input"
+      type="text"
+      placeholder="Select a car to edit"
+      [value]="editName()"
+      [attr.maxlength]="maxNameLength"
+      [disabled]="state.selectedCar() === null"
+      (input)="onEditName($event)"
+    />
+    <input
+      class="panel__color"
+      type="color"
+      [value]="editColor()"
+      [disabled]="state.selectedCar() === null"
+      (input)="onEditColor($event)"
+    />
+    <button type="button" [disabled]="!canEdit()" (click)="submitEdit()">Update</button>
+  </div>
+
+  <div class="panel__row">
+    <button type="button" disabled>Race</button>
+    <button type="button" disabled>Reset</button>
+    <button type="button" (click)="generate()">Generate 100 cars</button>
+  </div>
+</section>
+
+<p class="garage__page">Page {{ state.page() }} of {{ state.totalPages() }}</p>
 
 @if (state.cars().length === 0) {
   <p class="garage__empty">No cars in the garage</p>
 } @else {
   <ul class="garage__list">
     @for (car of state.cars(); track car.id) {
-      <li class="garage__item">
-        <span class="garage__swatch" [style.background]="car.color"></span>
-        <span class="garage__name">{{ car.name }}</span>
+      <li class="car">
+        <div class="car__controls">
+          <button type="button" (click)="selectCar(car)">Select</button>
+          <button type="button" (click)="removeCar(car.id)">Remove</button>
+          <span class="car__name">{{ car.name }}</span>
+        </div>
+        <div class="car__engine">
+          <button type="button" disabled>A</button>
+          <button type="button" disabled>B</button>
+        </div>
+        <div class="car__track">
+          <span class="car__icon" [style.color]="car.color">
+            <svg viewBox="0 0 100 40" width="60" height="24" aria-hidden="true">
+              <rect x="4" y="16" width="92" height="14" rx="4" fill="currentColor" />
+              <path d="M24 16 L36 6 L68 6 L78 16 Z" fill="currentColor" />
+              <circle cx="26" cy="32" r="6" fill="#222" />
+              <circle cx="74" cy="32" r="6" fill="#222" />
+            </svg>
+          </span>
+          <span class="car__flag">🏁</span>
+        </div>
       </li>
     }
   </ul>

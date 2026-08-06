@@ -1,0 +1,90 @@
+$gap: 0.5rem;
+$track-height: 3rem;
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+  margin-bottom: 1rem;
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $gap;
+    align-items: center;
+  }
+
+  &__input {
+    flex: 1 1 8rem;
+    min-width: 0;
+    padding: 0.4rem;
+  }
+
+  &__color {
+    width: 3rem;
+    height: 2rem;
+    padding: 0;
+  }
+}
+
+.garage {
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__empty {
+    font-style: italic;
+  }
+
+  &__pagination {
+    display: flex;
+    gap: $gap;
+    margin-top: 1rem;
+  }
+}
+
+.car {
+  border-bottom: 1px solid #ddd;
+  padding: $gap 0;
+
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $gap;
+    align-items: center;
+  }
+
+  &__engine {
+    display: flex;
+    gap: $gap;
+    margin: $gap 0;
+  }
+
+  &__track {
+    position: relative;
+    height: $track-height;
+    border-bottom: 2px dashed #999;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    position: absolute;
+    left: 0;
+    transition: transform linear;
+  }
+
+  &__flag {
+    position: absolute;
+    right: 0;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .car__name {
+    width: 100%;
+  }
+}
