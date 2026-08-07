@@ -70,10 +70,22 @@ $track-height: 3rem;
     align-items: center;
   }
 
+  &__lane {
+    position: relative;
+    width: calc(100% - 4rem);
+    height: 100%;
+  }
+
   &__icon {
     position: absolute;
     left: 0;
-    transition: transform linear;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__broken {
+    color: #c0392b;
+    font-size: 0.8rem;
   }
 
   &__flag {

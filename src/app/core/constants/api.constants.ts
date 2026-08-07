@@ -54,3 +54,6 @@ export const HEX_RADIX = 16;
 export const HEX_LENGTH = 6;
 export const MAX_CAR_NAME_LENGTH = 30;
 export const DEFAULT_CAR_COLOR = '#0088ff';
+export const MS_IN_SECOND = 1000;
+export const TIME_PRECISION = 2;
+export const PERCENT = 100;

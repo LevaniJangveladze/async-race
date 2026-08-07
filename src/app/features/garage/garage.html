@@ -60,18 +60,23 @@
           <span class="car__name">{{ car.name }}</span>
         </div>
         <div class="car__engine">
-          <button type="button" disabled>A</button>
-          <button type="button" disabled>B</button>
+          <button type="button" [disabled]="!canStart(car.id)" (click)="startCar(car.id)">A</button>
+          <button type="button" [disabled]="!canStop(car.id)" (click)="stopCar(car.id)">B</button>
+          @if (statusOf(car.id) === 'broken') {
+            <span class="car__broken">broken</span>
+          }
         </div>
         <div class="car__track">
-          <span class="car__icon" [style.color]="car.color">
-            <svg viewBox="0 0 100 40" width="60" height="24" aria-hidden="true">
-              <rect x="4" y="16" width="92" height="14" rx="4" fill="currentColor" />
-              <path d="M24 16 L36 6 L68 6 L78 16 Z" fill="currentColor" />
-              <circle cx="26" cy="32" r="6" fill="#222" />
-              <circle cx="74" cy="32" r="6" fill="#222" />
-            </svg>
-          </span>
+          <div class="car__lane">
+            <span class="car__icon" [style.left.%]="progressOf(car.id)" [style.color]="car.color">
+              <svg viewBox="0 0 100 40" width="60" height="24" aria-hidden="true">
+                <rect x="4" y="16" width="92" height="14" rx="4" fill="currentColor" />
+                <path d="M24 16 L36 6 L68 6 L78 16 Z" fill="currentColor" />
+                <circle cx="26" cy="32" r="6" fill="#222" />
+                <circle cx="74" cy="32" r="6" fill="#222" />
+              </svg>
+            </span>
+          </div>
           <span class="car__flag">🏁</span>
         </div>
       </li>

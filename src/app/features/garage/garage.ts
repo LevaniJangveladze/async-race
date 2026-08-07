@@ -1,7 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { DEFAULT_CAR_COLOR, MAX_CAR_NAME_LENGTH } from '../../core/constants/api.constants';
+import {
+  DEFAULT_CAR_COLOR,
+  MAX_CAR_NAME_LENGTH,
+  PERCENT,
+} from '../../core/constants/api.constants';
 import { Car } from '../../core/models/car.model';
+import { CarRaceStatus } from '../../core/models/race.model';
 import { GarageStateService } from '../../core/services/garage-state.service';
+import { RaceStateService } from '../../core/services/race-state.service';
 
 function inputValue(event: Event): string {
   return (event.target as HTMLInputElement).value;
@@ -19,6 +25,8 @@ function isValidName(name: string): boolean {
 })
 export class Garage implements OnInit {
   protected readonly state = inject(GarageStateService);
+
+  protected readonly race = inject(RaceStateService);
 
   protected readonly createName = signal('');
 
@@ -56,6 +64,30 @@ export class Garage implements OnInit {
 
   protected canEdit(): boolean {
     return this.state.selectedCar() !== null && isValidName(this.editName());
+  }
+
+  protected statusOf(id: number): CarRaceStatus {
+    return this.race.stateFor(id).status;
+  }
+
+  protected progressOf(id: number): number {
+    return this.race.stateFor(id).progress * PERCENT;
+  }
+
+  protected canStart(id: number): boolean {
+    return this.statusOf(id) === 'idle';
+  }
+
+  protected canStop(id: number): boolean {
+    return this.statusOf(id) !== 'idle';
+  }
+
+  protected async startCar(id: number): Promise<void> {
+    await this.race.startCar(id);
+  }
+
+  protected async stopCar(id: number): Promise<void> {
+    await this.race.stopCar(id);
   }
 
   protected async submitCreate(): Promise<void> {
