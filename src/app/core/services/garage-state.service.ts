@@ -3,6 +3,7 @@ import {
   CAR_BRANDS,
   CAR_MODELS,
   CARS_PER_PAGE,
+  DEFAULT_CAR_COLOR,
   HEX_COLOR_MAX,
   HEX_LENGTH,
   HEX_RADIX,
@@ -39,6 +40,14 @@ export class GarageStateService {
 
   private readonly selectedCarSignal = signal<Car | null>(null);
 
+  private readonly createNameSignal = signal('');
+
+  private readonly createColorSignal = signal(DEFAULT_CAR_COLOR);
+
+  private readonly editNameSignal = signal('');
+
+  private readonly editColorSignal = signal(DEFAULT_CAR_COLOR);
+
   public readonly cars = this.carsSignal.asReadonly();
 
   public readonly totalCount = this.totalCountSignal.asReadonly();
@@ -47,9 +56,39 @@ export class GarageStateService {
 
   public readonly selectedCar = this.selectedCarSignal.asReadonly();
 
+  public readonly createName = this.createNameSignal.asReadonly();
+
+  public readonly createColor = this.createColorSignal.asReadonly();
+
+  public readonly editName = this.editNameSignal.asReadonly();
+
+  public readonly editColor = this.editColorSignal.asReadonly();
+
   public readonly totalPages = computed(() =>
     Math.max(1, Math.ceil(this.totalCountSignal() / CARS_PER_PAGE)),
   );
+
+  public setCreateName(value: string): void {
+    this.createNameSignal.set(value);
+  }
+
+  public setCreateColor(value: string): void {
+    this.createColorSignal.set(value);
+  }
+
+  public setEditName(value: string): void {
+    this.editNameSignal.set(value);
+  }
+
+  public setEditColor(value: string): void {
+    this.editColorSignal.set(value);
+  }
+
+  public selectCar(car: Car | null): void {
+    this.selectedCarSignal.set(car);
+    this.editNameSignal.set(car?.name ?? '');
+    this.editColorSignal.set(car?.color ?? DEFAULT_CAR_COLOR);
+  }
 
   public async load(): Promise<void> {
     const result = await this.api.getCars(this.pageSignal(), CARS_PER_PAGE);
@@ -65,18 +104,15 @@ export class GarageStateService {
     await this.load();
   }
 
-  public selectCar(car: Car | null): void {
-    this.selectedCarSignal.set(car);
-  }
-
   public async createCar(car: NewCar): Promise<void> {
     await this.api.createCar(car);
+    this.createNameSignal.set('');
     await this.load();
   }
 
   public async updateCar(id: number, car: NewCar): Promise<void> {
     await this.api.updateCar(id, car);
-    this.selectedCarSignal.set(null);
+    this.selectCar(null);
     await this.load();
   }
 

@@ -6,14 +6,14 @@
       class="panel__input"
       type="text"
       placeholder="Car name"
-      [value]="createName()"
+      [value]="state.createName()"
       [attr.maxlength]="maxNameLength"
       (input)="onCreateName($event)"
     />
     <input
       class="panel__color"
       type="color"
-      [value]="createColor()"
+      [value]="state.createColor()"
       (input)="onCreateColor($event)"
     />
     <button type="button" [disabled]="!canCreate() || race.raceActive()" (click)="submitCreate()">
@@ -26,7 +26,7 @@
       class="panel__input"
       type="text"
       placeholder="Select a car to edit"
-      [value]="editName()"
+      [value]="state.editName()"
       [attr.maxlength]="maxNameLength"
       [disabled]="state.selectedCar() === null"
       (input)="onEditName($event)"
@@ -34,7 +34,7 @@
     <input
       class="panel__color"
       type="color"
-      [value]="editColor()"
+      [value]="state.editColor()"
       [disabled]="state.selectedCar() === null"
       (input)="onEditColor($event)"
     />

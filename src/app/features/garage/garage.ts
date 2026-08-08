@@ -1,9 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import {
-  DEFAULT_CAR_COLOR,
-  MAX_CAR_NAME_LENGTH,
-  PERCENT,
-} from '../../core/constants/api.constants';
+import { Component, OnInit, inject } from '@angular/core';
+import { MAX_CAR_NAME_LENGTH, PERCENT } from '../../core/constants/api.constants';
 import { Car } from '../../core/models/car.model';
 import { CarRaceStatus } from '../../core/models/race.model';
 import { GarageStateService } from '../../core/services/garage-state.service';
@@ -28,14 +24,6 @@ export class Garage implements OnInit {
 
   protected readonly race = inject(RaceStateService);
 
-  protected readonly createName = signal('');
-
-  protected readonly createColor = signal(DEFAULT_CAR_COLOR);
-
-  protected readonly editName = signal('');
-
-  protected readonly editColor = signal(DEFAULT_CAR_COLOR);
-
   protected readonly maxNameLength = MAX_CAR_NAME_LENGTH;
 
   public async ngOnInit(): Promise<void> {
@@ -43,27 +31,27 @@ export class Garage implements OnInit {
   }
 
   protected onCreateName(event: Event): void {
-    this.createName.set(inputValue(event));
+    this.state.setCreateName(inputValue(event));
   }
 
   protected onCreateColor(event: Event): void {
-    this.createColor.set(inputValue(event));
+    this.state.setCreateColor(inputValue(event));
   }
 
   protected onEditName(event: Event): void {
-    this.editName.set(inputValue(event));
+    this.state.setEditName(inputValue(event));
   }
 
   protected onEditColor(event: Event): void {
-    this.editColor.set(inputValue(event));
+    this.state.setEditColor(inputValue(event));
   }
 
   protected canCreate(): boolean {
-    return isValidName(this.createName());
+    return isValidName(this.state.createName());
   }
 
   protected canEdit(): boolean {
-    return this.state.selectedCar() !== null && isValidName(this.editName());
+    return this.state.selectedCar() !== null && isValidName(this.state.editName());
   }
 
   protected statusOf(id: number): CarRaceStatus {
@@ -94,14 +82,14 @@ export class Garage implements OnInit {
     if (!this.canCreate()) {
       return;
     }
-    await this.state.createCar({ name: this.createName().trim(), color: this.createColor() });
-    this.createName.set('');
+    await this.state.createCar({
+      name: this.state.createName().trim(),
+      color: this.state.createColor(),
+    });
   }
 
   protected selectCar(car: Car): void {
     this.state.selectCar(car);
-    this.editName.set(car.name);
-    this.editColor.set(car.color);
   }
 
   protected async submitEdit(): Promise<void> {
@@ -110,10 +98,9 @@ export class Garage implements OnInit {
       return;
     }
     await this.state.updateCar(selected.id, {
-      name: this.editName().trim(),
-      color: this.editColor(),
+      name: this.state.editName().trim(),
+      color: this.state.editColor(),
     });
-    this.editName.set('');
   }
 
   protected async removeCar(id: number): Promise<void> {
@@ -122,14 +109,6 @@ export class Garage implements OnInit {
 
   protected async generate(): Promise<void> {
     await this.state.generateRandomCars();
-  }
-
-  protected async previousPage(): Promise<void> {
-    await this.state.goToPage(this.state.page() - 1);
-  }
-
-  protected async nextPage(): Promise<void> {
-    await this.state.goToPage(this.state.page() + 1);
   }
 
   protected winnerName(): string {
@@ -146,5 +125,13 @@ export class Garage implements OnInit {
 
   protected async resetRace(): Promise<void> {
     await this.race.resetRace(this.state.cars().map((car) => car.id));
+  }
+
+  protected async previousPage(): Promise<void> {
+    await this.state.goToPage(this.state.page() - 1);
+  }
+
+  protected async nextPage(): Promise<void> {
+    await this.state.goToPage(this.state.page() + 1);
   }
 }
