@@ -1,11 +1,15 @@
-$gap: 0.5rem;
-$track-height: 3rem;
+$gap: 0.4rem;
 
 .panel {
   display: flex;
   flex-direction: column;
   gap: $gap;
-  margin-bottom: 1rem;
+  padding: 0.7rem;
+  margin-bottom: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 
   &__row {
     display: flex;
@@ -15,77 +19,161 @@ $track-height: 3rem;
   }
 
   &__input {
-    flex: 1 1 8rem;
+    flex: 1 1 10rem;
     min-width: 0;
-    padding: 0.4rem;
   }
 
   &__color {
-    width: 3rem;
-    height: 2rem;
-    padding: 0;
+    width: 2.4rem;
+    height: 1.9rem;
   }
 }
 
 .garage {
+  &__title {
+    font-size: 1.35rem;
+    margin-bottom: 0.4rem;
+  }
+
+  &__page {
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0.6rem 0 0.35rem;
+  }
+
   &__list {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
   }
 
   &__empty {
-    font-style: italic;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 2rem 1rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
   }
 
   &__banner {
-    background: #fff4c2;
-    border: 1px solid #e0c000;
-    padding: $gap;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.5rem;
+    padding: 0.45rem 0.8rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #7a4b00;
+    background: linear-gradient(100deg, #fff5dc, #ffe9b8);
+    border: 1px solid #f2d089;
+    border-radius: var(--radius);
+    animation: banner-in 0.4s var(--ease);
   }
 
   &__pagination {
     display: flex;
     gap: $gap;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
+  }
+}
+
+@keyframes banner-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
   }
 }
 
 .car {
-  border-bottom: 1px solid #ddd;
-  padding: $gap 0;
+  display: flex;
+  align-items: center;
+  gap: $gap;
+  padding: 0.35rem 0.55rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color 0.16s var(--ease),
+    box-shadow 0.16s var(--ease);
+
+  &:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+  }
 
   &__controls {
     display: flex;
-    flex-wrap: wrap;
-    gap: $gap;
     align-items: center;
+    gap: 0.25rem;
+    flex: 0 0 auto;
+
+    button {
+      padding: 0.18rem 0.45rem;
+      font-size: 0.72rem;
+    }
+  }
+
+  &__name {
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: -0.01em;
+    margin-left: 0.15rem;
+    width: 7.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__engine {
     display: flex;
-    gap: $gap;
     align-items: center;
-    margin: $gap 0;
+    gap: 0.2rem;
+    margin: 0;
+    flex: 0 0 auto;
+
+    button {
+      width: 1.6rem;
+      padding: 0.18rem 0;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
   }
 
   &__broken {
-    color: #c0392b;
-    font-size: 0.8rem;
+    color: var(--danger);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   &__track {
+    flex: 1 1 180px;
+    min-width: 140px;
     position: relative;
-    height: $track-height;
-    border-bottom: 2px dashed #999;
+    height: 2rem;
     display: flex;
     align-items: center;
+    padding: 0 0.4rem;
+    border-radius: var(--radius-sm);
+    background:
+      repeating-linear-gradient(to right, rgba(16, 24, 40, 0.13) 0 12px, transparent 12px 28px)
+        center / 100% 2px no-repeat,
+      linear-gradient(180deg, #fbfcfd, #f1f3f7);
+    border: 1px solid var(--border);
   }
 
   &__lane {
     position: relative;
-    width: calc(100% - 4rem);
+    width: calc(100% - 3rem);
     height: 100%;
   }
 
@@ -94,17 +182,37 @@ $track-height: 3rem;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
+    filter: drop-shadow(0 2px 3px rgba(16, 24, 40, 0.2));
+    will-change: left;
+
+    svg {
+      width: 38px;
+      height: 15px;
+    }
   }
 
   &__flag {
     position: absolute;
-    right: 0;
-    font-size: 1.5rem;
+    right: 0.4rem;
+    font-size: 1rem;
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
+  .car {
+    flex-wrap: wrap;
+  }
+
+  .car__track {
+    flex: 1 1 100%;
+  }
+
   .car__name {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .garage__title {
+    font-size: 1.2rem;
   }
 }

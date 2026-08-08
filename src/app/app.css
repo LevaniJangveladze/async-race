@@ -1,0 +1,35 @@
+.nav {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.55rem 1.25rem;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.nav__link {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-weight: 550;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  transition:
+    color 0.16s var(--ease),
+    background 0.16s var(--ease);
+}
+.nav__link:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+.nav__link--active {
+  color: var(--accent);
+  background: rgba(59, 110, 245, 0.1);
+}
+
+.main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+} /*# sourceMappingURL=app.css.map */

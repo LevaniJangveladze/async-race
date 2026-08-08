@@ -1,43 +1,35 @@
-$gap: 0.45rem;
-
-.winners {
-  &__title {
-    font-size: 1.5rem;
-  }
-
-  &__page {
-    color: var(--text-dim);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin: 0 0 0.75rem;
-  }
-
-  &__table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-  }
-
-  &__empty {
-    color: var(--text-dim);
-    text-align: center;
-    padding: 2.5rem 1rem;
-    border: 1px dashed var(--border-strong);
-    border-radius: var(--radius);
-  }
-
-  &__pagination {
-    display: flex;
-    gap: $gap;
-    margin-top: 1rem;
-  }
+.winners__title {
+  font-size: 1.5rem;
+}
+.winners__page {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem;
+}
+.winners__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.winners__empty {
+  color: var(--text-dim);
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+.winners__pagination {
+  display: flex;
+  gap: 0.45rem;
+  margin-top: 1rem;
 }
 
 th,
@@ -79,13 +71,12 @@ th button {
   color: inherit;
   cursor: pointer;
   transition: color 0.14s var(--ease);
-
-  &:hover:not(:disabled) {
-    color: var(--accent);
-    background: none;
-    transform: none;
-    box-shadow: none;
-  }
+}
+th button:hover:not(:disabled) {
+  color: var(--accent);
+  background: none;
+  transform: none;
+  box-shadow: none;
 }
 
 td svg {
@@ -99,8 +90,7 @@ td svg {
     padding: 0.45rem 0.5rem;
     font-size: 0.8rem;
   }
-
   .winners__title {
     font-size: 1.3rem;
   }
-}
+} /*# sourceMappingURL=winners.css.map */
