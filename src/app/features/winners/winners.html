@@ -23,7 +23,7 @@
     <tbody>
       @for (winner of state.winners(); track winner.id; let i = $index) {
         <tr>
-          <td>{{ i + 1 }}</td>
+          <td>{{ rowNumber(i) }}</td>
           <td>
             <span [style.color]="winner.color">
               <svg viewBox="0 0 100 40" width="50" height="20" aria-hidden="true">

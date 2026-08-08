@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { WinnerSortField } from '../../core/models/winner.model';
+import { WINNERS_PER_PAGE } from '../../core/constants/api.constants';
 import { WinnersStateService } from '../../core/services/winners-state.service';
 
 @Component({
@@ -32,5 +33,9 @@ export class Winners implements OnInit {
 
   protected async nextPage(): Promise<void> {
     await this.state.goToPage(this.state.page() + 1);
+  }
+
+  protected rowNumber(index: number): number {
+    return (this.state.page() - 1) * WINNERS_PER_PAGE + index + 1;
   }
 }

@@ -152,4 +152,8 @@ export class RaceStateService {
     this.winnerSignal.set(null);
     await Promise.all(ids.map((id) => this.stopCar(id)));
   }
+
+  public clearWinner(): void {
+    this.winnerSignal.set(null);
+  }
 }

@@ -128,10 +128,12 @@ export class Garage implements OnInit {
   }
 
   protected async previousPage(): Promise<void> {
+    this.race.clearWinner();
     await this.state.goToPage(this.state.page() - 1);
   }
 
   protected async nextPage(): Promise<void> {
+    this.race.clearWinner();
     await this.state.goToPage(this.state.page() + 1);
   }
 }
