@@ -1,0 +1,34 @@
+$gap: 0.5rem;
+
+.winners {
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  &__empty {
+    font-style: italic;
+  }
+
+  &__pagination {
+    display: flex;
+    gap: $gap;
+    margin-top: 1rem;
+  }
+}
+
+th,
+td {
+  border-bottom: 1px solid #ddd;
+  padding: $gap;
+  text-align: left;
+}
+
+th button {
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+}

@@ -1,1 +1,51 @@
-<p>winners works!</p>
+<h2 class="winners__title">Winners ({{ state.totalCount() }})</h2>
+<p class="winners__page">Page {{ state.page() }} of {{ state.totalPages() }}</p>
+
+@if (state.winners().length === 0) {
+  <p class="winners__empty">No winners yet</p>
+} @else {
+  <table class="winners__table">
+    <thead>
+      <tr>
+        <th scope="col">№</th>
+        <th scope="col">Car</th>
+        <th scope="col">Name</th>
+        <th scope="col">
+          <button type="button" (click)="sortBy('wins')">Wins{{ arrowFor('wins') }}</button>
+        </th>
+        <th scope="col">
+          <button type="button" (click)="sortBy('time')">
+            Best time (s){{ arrowFor('time') }}
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (winner of state.winners(); track winner.id; let i = $index) {
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>
+            <span [style.color]="winner.color">
+              <svg viewBox="0 0 100 40" width="50" height="20" aria-hidden="true">
+                <rect x="4" y="16" width="92" height="14" rx="4" fill="currentColor" />
+                <path d="M24 16 L36 6 L68 6 L78 16 Z" fill="currentColor" />
+                <circle cx="26" cy="32" r="6" fill="#222" />
+                <circle cx="74" cy="32" r="6" fill="#222" />
+              </svg>
+            </span>
+          </td>
+          <td>{{ winner.name }}</td>
+          <td>{{ winner.wins }}</td>
+          <td>{{ winner.time }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+<div class="winners__pagination">
+  <button type="button" (click)="previousPage()" [disabled]="state.page() === 1">Prev</button>
+  <button type="button" (click)="nextPage()" [disabled]="state.page() === state.totalPages()">
+    Next
+  </button>
+</div>
