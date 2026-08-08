@@ -16,7 +16,9 @@
       [value]="createColor()"
       (input)="onCreateColor($event)"
     />
-    <button type="button" [disabled]="!canCreate()" (click)="submitCreate()">Create</button>
+    <button type="button" [disabled]="!canCreate() || race.raceActive()" (click)="submitCreate()">
+      Create
+    </button>
   </div>
 
   <div class="panel__row">
@@ -36,15 +38,23 @@
       [disabled]="state.selectedCar() === null"
       (input)="onEditColor($event)"
     />
-    <button type="button" [disabled]="!canEdit()" (click)="submitEdit()">Update</button>
+    <button type="button" [disabled]="!canEdit() || race.raceActive()" (click)="submitEdit()">
+      Update
+    </button>
   </div>
 
   <div class="panel__row">
-    <button type="button" disabled>Race</button>
-    <button type="button" disabled>Reset</button>
-    <button type="button" (click)="generate()">Generate 100 cars</button>
+    <button type="button" [disabled]="race.raceActive()" (click)="startRace()">Race</button>
+    <button type="button" [disabled]="race.raceActive()" (click)="resetRace()">Reset</button>
+    <button type="button" [disabled]="race.raceActive()" (click)="generate()">
+      Generate 100 cars
+    </button>
   </div>
 </section>
+
+@if (race.winner() !== null) {
+  <p class="garage__banner">🏆 {{ winnerName() }} won in {{ race.winner()?.time }}s</p>
+}
 
 <p class="garage__page">Page {{ state.page() }} of {{ state.totalPages() }}</p>
 
@@ -55,17 +65,35 @@
     @for (car of state.cars(); track car.id) {
       <li class="car">
         <div class="car__controls">
-          <button type="button" (click)="selectCar(car)">Select</button>
-          <button type="button" (click)="removeCar(car.id)">Remove</button>
+          <button type="button" [disabled]="race.raceActive()" (click)="selectCar(car)">
+            Select
+          </button>
+          <button type="button" [disabled]="race.raceActive()" (click)="removeCar(car.id)">
+            Remove
+          </button>
           <span class="car__name">{{ car.name }}</span>
         </div>
+
         <div class="car__engine">
-          <button type="button" [disabled]="!canStart(car.id)" (click)="startCar(car.id)">A</button>
-          <button type="button" [disabled]="!canStop(car.id)" (click)="stopCar(car.id)">B</button>
+          <button
+            type="button"
+            [disabled]="!canStart(car.id) || race.raceActive()"
+            (click)="startCar(car.id)"
+          >
+            A
+          </button>
+          <button
+            type="button"
+            [disabled]="!canStop(car.id) || race.raceActive()"
+            (click)="stopCar(car.id)"
+          >
+            B
+          </button>
           @if (statusOf(car.id) === 'broken') {
             <span class="car__broken">broken</span>
           }
         </div>
+
         <div class="car__track">
           <div class="car__lane">
             <span class="car__icon" [style.left.%]="progressOf(car.id)" [style.color]="car.color">
@@ -85,8 +113,18 @@
 }
 
 <div class="garage__pagination">
-  <button type="button" (click)="previousPage()" [disabled]="state.page() === 1">Prev</button>
-  <button type="button" (click)="nextPage()" [disabled]="state.page() === state.totalPages()">
+  <button
+    type="button"
+    (click)="previousPage()"
+    [disabled]="state.page() === 1 || race.raceActive()"
+  >
+    Prev
+  </button>
+  <button
+    type="button"
+    (click)="nextPage()"
+    [disabled]="state.page() === state.totalPages() || race.raceActive()"
+  >
     Next
   </button>
 </div>

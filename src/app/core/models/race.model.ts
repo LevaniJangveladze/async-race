@@ -5,3 +5,8 @@ export interface CarRaceState {
   progress: number;
   time: number;
 }
+
+export interface RaceWinner {
+  id: number;
+  time: number;
+}

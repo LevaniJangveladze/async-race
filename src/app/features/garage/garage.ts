@@ -131,4 +131,20 @@ export class Garage implements OnInit {
   protected async nextPage(): Promise<void> {
     await this.state.goToPage(this.state.page() + 1);
   }
+
+  protected winnerName(): string {
+    const winner = this.race.winner();
+    if (winner === null) {
+      return '';
+    }
+    return this.state.cars().find((car) => car.id === winner.id)?.name ?? '';
+  }
+
+  protected async startRace(): Promise<void> {
+    await this.race.startRace(this.state.cars().map((car) => car.id));
+  }
+
+  protected async resetRace(): Promise<void> {
+    await this.race.resetRace(this.state.cars().map((car) => car.id));
+  }
 }

@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { MS_IN_SECOND, TIME_PRECISION } from '../constants/api.constants';
-import { CarRaceState } from '../models/race.model';
+import { CarRaceState, RaceWinner } from '../models/race.model';
 import { ApiService } from './api.service';
 
 const IDLE_STATE: CarRaceState = { status: 'idle', progress: 0, time: 0 };
@@ -11,11 +11,19 @@ export class RaceStateService {
 
   private readonly statesSignal = signal<Record<number, CarRaceState>>({});
 
+  private readonly raceActiveSignal = signal(false);
+
+  private readonly winnerSignal = signal<RaceWinner | null>(null);
+
   private readonly frames = new Map<number, number>();
 
   private readonly runs = new Map<number, number>();
 
   public readonly states = this.statesSignal.asReadonly();
+
+  public readonly raceActive = this.raceActiveSignal.asReadonly();
+
+  public readonly winner = this.winnerSignal.asReadonly();
 
   public stateFor(id: number): CarRaceState {
     return this.statesSignal()[id] ?? IDLE_STATE;
@@ -46,7 +54,9 @@ export class RaceStateService {
         return;
       }
       const progress = Math.min(1, (now - startedAt) / durationMs);
-      this.patch(id, { progress });
+      if (progress > this.stateFor(id).progress) {
+        this.patch(id, { progress });
+      }
       if (progress < 1) {
         this.frames.set(id, requestAnimationFrame(step));
       }
@@ -60,6 +70,15 @@ export class RaceStateService {
       cancelAnimationFrame(frame);
       this.frames.delete(id);
     }
+  }
+
+  private async saveWinner(id: number, time: number): Promise<void> {
+    const existing = await this.api.getWinner(id);
+    if (existing === null) {
+      await this.api.createWinner({ id, wins: 1, time });
+      return;
+    }
+    await this.api.updateWinner(id, existing.wins + 1, Math.min(existing.time, time));
   }
 
   public async startCar(id: number): Promise<boolean> {
@@ -103,5 +122,34 @@ export class RaceStateService {
     this.stopAnimation(id);
     await this.api.stopEngine(id);
     this.patch(id, { status: 'idle', progress: 0, time: 0 });
+  }
+
+  public async startRace(ids: number[]): Promise<void> {
+    this.raceActiveSignal.set(true);
+    this.winnerSignal.set(null);
+
+    const attempts = ids.map(async (id) => {
+      const finished = await this.startCar(id);
+      if (!finished) {
+        throw new Error(`Car ${id} broke down`);
+      }
+      return { id, time: this.stateFor(id).time };
+    });
+
+    try {
+      const first = await Promise.any(attempts);
+      this.winnerSignal.set(first);
+      await this.saveWinner(first.id, first.time);
+    } catch {
+      this.winnerSignal.set(null);
+    }
+
+    await Promise.allSettled(attempts);
+    this.raceActiveSignal.set(false);
+  }
+
+  public async resetRace(ids: number[]): Promise<void> {
+    this.winnerSignal.set(null);
+    await Promise.all(ids.map((id) => this.stopCar(id)));
   }
 }
