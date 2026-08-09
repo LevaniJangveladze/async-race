@@ -23,15 +23,15 @@ npm start
 
 The server runs on `http://127.0.0.1:3000`. After it starts, open the deployed link.
 
-> **⚠️ Please use Chrome, and allow insecure content for this site.**
-> The deployed site is served over HTTPS while the mock server runs on `http://127.0.0.1:3000`,
-> so Chrome may block the requests the first time you open it.
+> **⚠️ Please use Chrome.** The deployed site calls the mock server on `http://127.0.0.1:3000`,
+> so Chrome will ask for permission the first time you open it:
+> _"levani-async-race.netlify.app wants to access other apps and services on this device."_
+> Click **Allow** and the app works normally.
 >
-> If the cars do not load, click the **icon on the left of the address bar** →
-> **Site settings** → set **Insecure content** to **Allow**, then reload the page.
+> If nothing loads afterwards, click the icon to the left of the address bar → **Site settings**
+> and make sure the permission is allowed.
 >
-> Alternatively, clone this repository and run it locally with `npm install && npm start`,
-> which avoids the HTTPS/HTTP mix entirely.
+> Alternatively, clone this repository and run it locally with `npm install && npm start`.
 
 If you want to run the UI locally instead:
 
